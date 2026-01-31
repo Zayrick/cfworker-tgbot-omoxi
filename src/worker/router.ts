@@ -1,8 +1,8 @@
 import { readBotConfig, readBotPaths } from '../config/botConfig';
-import { Bot } from '../bot/bot';
-import { commands } from '../bot/commands/commands.generated';
+import { Bot } from '../bot/index';
+import { commands } from '../bot/generated/commands.generated';
 import { createTelegramClient } from '../services/telegram';
-import type { TelegramUpdate } from '../bot/types';
+import type { TelegramUpdate } from '../bot/index';
 
 function jsonResponse(body: unknown, init?: ResponseInit): Response {
 	return new Response(JSON.stringify(body, null, 2), {

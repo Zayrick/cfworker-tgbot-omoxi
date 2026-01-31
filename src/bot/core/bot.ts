@@ -1,9 +1,9 @@
 import type { BotCommand } from './command';
-import type { BotContext } from './context';
-import type { TelegramCallbackQuery, TelegramInlineQuery, TelegramMessage, TelegramUpdate } from './types';
+import type { BotContext } from '../context';
+import type { TelegramCallbackQuery, TelegramInlineQuery, TelegramMessage, TelegramUpdate } from '../telegram/types';
 import { isAllowed } from './accessControl';
 import { parseCommand } from './parseCommand';
-import { extractTextFromMessage } from './text';
+import { extractTextFromMessage } from '../telegram/text';
 
 export class Bot {
 	constructor(private readonly commands: BotCommand[]) {}

@@ -1,5 +1,5 @@
-import type { BotCommand } from '../../bot/command';
-import { extractTextFromMessage } from '../../bot/text';
+import type { BotCommand } from '../../bot/index';
+import { extractTextFromMessage } from '../../bot/index';
 import { escapeHtml } from '../../utils/html';
 import { chunkByParagraphs } from './chunk';
 import { arrangeTrans, guessNbnhhsh, type NbnhhshTag } from './nbnhhsh';

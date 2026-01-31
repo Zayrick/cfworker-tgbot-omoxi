@@ -1,5 +1,5 @@
-import type { BotContext } from './context';
-import type { TelegramCallbackQuery, TelegramInlineQuery, TelegramMessage } from './types';
+import type { BotContext } from '../context';
+import type { TelegramCallbackQuery, TelegramInlineQuery, TelegramMessage } from '../telegram/types';
 
 export type ParsedCommand = {
 	command: string;

@@ -1,4 +1,4 @@
-import type { AccessControlConfig } from '../config/botConfig';
+import type { AccessControlConfig } from '../../config/botConfig';
 
 export function isAllowed(access: AccessControlConfig, userId: number, chatId: number): boolean {
 	if (access.userBlacklist.includes(userId)) return false;
