@@ -33,7 +33,6 @@
 - `env_sm_ai_api_endpoint`
 - `env_sm_ai_api_key`
 - `env_sm_ai_model_name`
-- `env_sm_ai_system_prompt`（可选，未配置会使用默认系统提示词）
 
 ## 添加新命令（像加“控制器”一样）
 

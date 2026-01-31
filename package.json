@@ -15,7 +15,7 @@
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
-		"lunar-javascript": "^1.7.4"
+		"tyme4ts": "^1.4.1"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.12.4",

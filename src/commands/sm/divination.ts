@@ -1,4 +1,4 @@
-import { Lunar } from 'lunar-javascript';
+import { SolarTime } from 'tyme4ts';
 import { generateHexagram } from './hexagram';
 
 export type Divination = {
@@ -13,8 +13,18 @@ function pad2(n: number): string {
 }
 
 function getFullBazi(date: Date): string {
-	const lunar = Lunar.fromDate(date);
-	return `${lunar.getYearInGanZhi()}年 ${lunar.getMonthInGanZhi()}月 ${lunar.getDayInGanZhi()}日 ${lunar.getTimeInGanZhi()}时`;
+	// tyme4ts 以“公历时刻 -> 农历时辰 -> 八字(年/月/日/时柱干支)”的链路获取干支
+	// 注意：这里传入的 date 已经是“北京时间”的 Date（通过 +8h 偏移获得）
+	const solarTime = SolarTime.fromYmdHms(
+		date.getFullYear(),
+		date.getMonth() + 1,
+		date.getDate(),
+		date.getHours(),
+		date.getMinutes(),
+		date.getSeconds(),
+	);
+	const eightChar = solarTime.getLunarHour().getEightChar();
+	return `${eightChar.getYear().getName()}年 ${eightChar.getMonth().getName()}月 ${eightChar.getDay().getName()}日 ${eightChar.getHour().getName()}时`;
 }
 
 function getBeijingTime(nowUTC = new Date()): Date {

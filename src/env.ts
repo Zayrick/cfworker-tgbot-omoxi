@@ -38,6 +38,5 @@ declare global {
 		env_sm_ai_api_endpoint?: string;
 		env_sm_ai_api_key?: string;
 		env_sm_ai_model_name?: string;
-		env_sm_ai_system_prompt?: string;
 	}
 }
