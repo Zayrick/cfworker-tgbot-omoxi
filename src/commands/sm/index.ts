@@ -55,6 +55,50 @@ async function generateAnswer(
 	return `${divinationHtml}\n<blockquote>${escapeHtml(aiText)}</blockquote>`;
 }
 
+async function generateAnswerWithKnownDivination(
+	ctx: Parameters<NonNullable<BotCommand['onMessage']>>[0],
+	params: { question: string; referenceText?: string; divination: ReturnType<typeof createDivination> },
+): Promise<{ divinationHtml: string; answerHtml: string }> {
+	const divinationHtml = buildDivinationHtml({
+		question: params.question,
+		hexagram: params.divination.hexagram,
+		ganzhi: params.divination.ganzhi,
+	});
+
+	const cfg = readSmConfig(ctx.env);
+	if (!cfg) {
+		const errorHtml =
+			'<blockquote>当前未配置 /sm 所需的 AI 环境变量（env_sm_ai_api_endpoint / env_sm_ai_api_key / env_sm_ai_model_name）。</blockquote>';
+		return { divinationHtml, answerHtml: errorHtml };
+	}
+
+	const prompt = buildDivinationPrompt({
+		question: params.question,
+		referenceText: params.referenceText,
+		divination: params.divination,
+	});
+
+	let aiText: string;
+	try {
+		aiText = await callChatCompletion(
+			{
+				apiEndpoint: cfg.aiApiEndpoint,
+				apiKey: cfg.aiApiKey,
+				modelName: cfg.aiModelName,
+				systemPrompt: cfg.aiSystemPrompt,
+			},
+			prompt,
+		);
+	} catch {
+		aiText = '抱歉，AI 服务暂时不可用，请稍后再试。';
+	}
+
+	return {
+		divinationHtml,
+		answerHtml: `${divinationHtml}\n<blockquote>${escapeHtml(aiText)}</blockquote>`,
+	};
+}
+
 const sm: BotCommand = {
 	id: 'sm',
 	triggers: TRIGGERS,
@@ -88,14 +132,21 @@ const sm: BotCommand = {
 		}
 
 		const referenceText = useSpecialFormat ? refText : undefined;
-		const answer = await generateAnswer(ctx, question, referenceText);
-
 		const replyToId = refMsg ? refMsg.message_id : message.message_id;
-		const placeholder = answer.split('\n<blockquote>')[0] ?? answer;
+
+		// 关键交互：先发送“基础占卜信息”，再等待 AI 生成完后通过编辑消息更新。
+		const divination = createDivination();
+		const placeholderHtml = buildDivinationHtml({ question, hexagram: divination.hexagram, ganzhi: divination.ganzhi });
 		const placeholderResp = await ctx.telegram.sendMessage({
 			chatId,
 			replyToMessageId: replyToId,
-			text: placeholder,
+			text: placeholderHtml,
+		});
+
+		const { answerHtml } = await generateAnswerWithKnownDivination(ctx, {
+			question,
+			referenceText,
+			divination,
 		});
 
 		const placeholderMsgId = placeholderResp.result?.message_id;
@@ -103,7 +154,7 @@ const sm: BotCommand = {
 			await ctx.telegram.editMessageText({
 				chatId,
 				messageId: placeholderMsgId,
-				text: answer,
+				text: answerHtml,
 			});
 			return true;
 		}
@@ -111,7 +162,7 @@ const sm: BotCommand = {
 		await ctx.telegram.sendMessage({
 			chatId,
 			replyToMessageId: replyToId,
-			text: answer,
+			text: answerHtml,
 		});
 		return true;
 	},
