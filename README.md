@@ -24,9 +24,13 @@
 
 - `env_safe_path`：安全路径前缀
 - `env_bot_username`：机器人用户名（不含 `@`），用于解析 `/cmd@BotName`
-- `env_user_whitelist`：用户白名单（逗号分隔 ID）
-- `env_group_whitelist`：群组白名单（逗号分隔 ID，群组 ID 通常为负数）
-- `env_user_blacklist`：用户黑名单（逗号分隔 ID，优先级最高）
+- `env_filter_mode`：过滤模式（`off` / `whitelist` / `blacklist`）
+- `env_filter_list`：过滤列表（逗号分隔 ID；可同时填用户 ID 与群组 ID，群组 ID 通常为负数）
+
+> 规则：
+> - `off`：不启用过滤（默认）
+> - `blacklist`：命中列表中的用户 ID 或聊天/群组 ID 则拒绝处理
+> - `whitelist`：仅当用户 ID 或聊天/群组 ID 命中列表才允许处理（列表为空则全部拒绝）
 
 ### `/sm` 专属（可选，但缺失会导致 `/sm` 提示未配置）
 

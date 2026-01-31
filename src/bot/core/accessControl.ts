@@ -1,13 +1,15 @@
 import type { AccessControlConfig } from '../../config/botConfig';
 
 export function isAllowed(access: AccessControlConfig, userId: number, chatId: number): boolean {
-	if (access.userBlacklist.includes(userId)) return false;
+	if (access.mode === 'off') return true;
 
-	const hasAnyWhitelist = access.userWhitelist.length > 0 || access.groupWhitelist.length > 0;
-	if (!hasAnyWhitelist) return true;
+	const list = access.list;
+	if (access.mode === 'blacklist') {
+		return !(list.includes(userId) || list.includes(chatId));
+	}
 
-	if (access.userWhitelist.includes(userId)) return true;
-	if (chatId < 0 && access.groupWhitelist.includes(chatId)) return true;
-	return false;
+	// whitelist: only allow if either userId or chatId is in the list
+	if (list.length === 0) return false;
+	return list.includes(userId) || list.includes(chatId);
 }
 

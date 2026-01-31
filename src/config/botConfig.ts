@@ -1,7 +1,8 @@
+export type AccessControlMode = 'off' | 'whitelist' | 'blacklist';
+
 export type AccessControlConfig = {
-	userWhitelist: number[];
-	groupWhitelist: number[];
-	userBlacklist: number[];
+	mode: AccessControlMode;
+	list: number[];
 };
 
 export type BotConfig = {
@@ -26,6 +27,17 @@ function parseIdList(input: string | undefined): number[] {
 		.filter(n => Number.isFinite(n));
 }
 
+function parseAccessControlMode(input: string | undefined): AccessControlMode {
+	const raw = input?.trim().toLowerCase() ?? '';
+	if (!raw) return 'off';
+
+	if (['off', 'disable', 'disabled', 'none', '0', 'false'].includes(raw)) return 'off';
+	if (['whitelist', 'allowlist', 'white', 'allow'].includes(raw)) return 'whitelist';
+	if (['blacklist', 'denylist', 'black', 'deny'].includes(raw)) return 'blacklist';
+
+	throw new Error(`Invalid env_filter_mode: ${input}`);
+}
+
 function normalizeSafePath(input: string | undefined): string {
 	const raw = input?.trim() ?? '';
 	return raw ? `/${raw.replace(/^\/+/g, '').replace(/\/+$/g, '')}` : '';
@@ -48,9 +60,8 @@ export function readBotConfig(env: Env): BotConfig {
 		safePath: normalizeSafePath(env.env_safe_path),
 		botUsername: normalizeBotUsername(env.env_bot_username),
 		accessControl: {
-			userWhitelist: parseIdList(env.env_user_whitelist),
-			groupWhitelist: parseIdList(env.env_group_whitelist),
-			userBlacklist: parseIdList(env.env_user_blacklist),
+			mode: parseAccessControlMode(env.env_filter_mode),
+			list: parseIdList(env.env_filter_list),
 		},
 	};
 }

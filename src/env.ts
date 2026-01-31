@@ -26,11 +26,13 @@ declare global {
 		env_bot_username?: string;
 
 		/**
-		 * Optional access control lists (comma-separated numeric IDs)
+		 * Optional access control filter.
+		 *
+		 * - env_filter_mode: off | whitelist | blacklist
+		 * - env_filter_list: comma-separated numeric IDs (can include negative group IDs)
 		 */
-		env_user_whitelist?: string;
-		env_group_whitelist?: string;
-		env_user_blacklist?: string;
+		env_filter_mode?: string;
+		env_filter_list?: string;
 
 		/**
 		 * /sm (算命) command-specific configuration
