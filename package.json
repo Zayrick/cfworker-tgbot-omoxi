@@ -3,11 +3,19 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
+		"generate:commands": "node scripts/generate-commands.mjs",
+		"predeploy": "npm run generate:commands",
 		"deploy": "wrangler deploy",
+		"predev": "npm run generate:commands",
 		"dev": "wrangler dev",
+		"prestart": "npm run generate:commands",
 		"start": "wrangler dev",
+		"pretest": "npm run generate:commands",
 		"test": "vitest",
 		"cf-typegen": "wrangler types"
+	},
+	"dependencies": {
+		"lunar-javascript": "^1.7.4"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.12.4",
