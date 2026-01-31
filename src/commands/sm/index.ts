@@ -7,11 +7,6 @@ import { buildDivinationPrompt, createDivination } from './divination';
 
 const TRIGGERS = ['/sm', '/算命'];
 
-function isPrivateChat(message: { chat: { id: number; type?: string } }): boolean {
-	if (message.chat.type) return message.chat.type === 'private';
-	return message.chat.id > 0;
-}
-
 function buildDivinationHtml(params: { question: string; hexagram: string; ganzhi: string }): string {
 	const q = escapeHtml(params.question);
 	const h = escapeHtml(params.hexagram);
@@ -67,15 +62,10 @@ const sm: BotCommand = {
 
 	async onMessage(ctx, message, parsed) {
 		const chatId = message.chat.id;
-		const messageText = extractTextFromMessage(message);
-		const isGroup = chatId < 0;
-
 		const isSmCommand = parsed ? TRIGGERS.includes(parsed.command) : false;
-		if (parsed && !isSmCommand) return false;
+		if (!parsed || !isSmCommand) return false;
 
-		if (!parsed && (isGroup || !isPrivateChat(message))) return false;
-
-		let question = parsed ? parsed.argsText.trim() : messageText.trim();
+		let question = parsed.argsText.trim();
 		const refMsg = message.reply_to_message;
 		const refText = refMsg ? extractTextFromMessage(refMsg) : '';
 		let useSpecialFormat = false;

@@ -8,6 +8,21 @@ import { extractTextFromMessage } from '../telegram/text';
 export class Bot {
 	constructor(private readonly commands: BotCommand[]) {}
 
+	private buildHelpText(): string {
+		const lines: string[] = [];
+		lines.push('请使用命令与机器人交互（不带命令的消息不会触发任何操作）。');
+		lines.push('');
+		lines.push('当前支持的指令：');
+		for (const c of this.commands) {
+			const triggers = (c.triggers ?? []).filter(Boolean);
+			const triggerText = triggers.length > 0 ? triggers.join(' / ') : c.id;
+			lines.push(`- ${triggerText}：${c.description}`);
+		}
+		lines.push('');
+		lines.push('示例：/sm 今天运势如何？');
+		return lines.join('\n');
+	}
+
 	async handleUpdate(ctx: BotContext, update: TelegramUpdate): Promise<void> {
 		if (update.message) {
 			await this.handleMessage(ctx, update.message);
@@ -36,7 +51,18 @@ export class Bot {
 			if (handled) return;
 		}
 
-		if (!parsed) return;
+		if (!parsed) {
+			const isGroup = chatId < 0;
+			if (isGroup) return;
+			if (!messageText) return;
+
+			await ctx.telegram.sendMessage({
+				chatId,
+				replyToMessageId: message.message_id,
+				text: this.buildHelpText(),
+			});
+			return;
+		}
 
 		const isGroup = chatId < 0;
 		if (isGroup) return;
