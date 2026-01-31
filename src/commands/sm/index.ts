@@ -5,7 +5,7 @@ import { callChatCompletion } from './ai';
 import { readSmConfig } from './config';
 import { buildDivinationPrompt, createDivination } from './divination';
 
-const TRIGGERS = ['/sm', '/算命'];
+const TRIGGERS = ['/sm'];
 
 function buildDivinationHtml(params: { question: string; hexagram: string; ganzhi: string }): string {
 	const q = escapeHtml(params.question);

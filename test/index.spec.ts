@@ -25,7 +25,6 @@ describe('tgbot-omoxi worker', () => {
 			      "id": "sm",
 			      "triggers": [
 			        "/sm",
-			        "/算命",
 			      ],
 			    },
 			  ],
@@ -57,7 +56,6 @@ describe('tgbot-omoxi worker', () => {
 			      "id": "sm",
 			      "triggers": [
 			        "/sm",
-			        "/算命",
 			      ],
 			    },
 			  ],
