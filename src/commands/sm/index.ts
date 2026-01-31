@@ -136,7 +136,7 @@ const sm: BotCommand = {
 
 		// 关键交互：先发送“基础占卜信息”，再等待 AI 生成完后通过编辑消息更新。
 		const divination = createDivination();
-		const placeholderHtml = buildDivinationHtml({ question, hexagram: divination.hexagram, ganzhi: divination.ganzhi });
+		const placeholderHtml = `${buildDivinationHtml({ question, hexagram: divination.hexagram, ganzhi: divination.ganzhi })}\n<blockquote>别急，算着呢~</blockquote>`;
 		const placeholderResp = await ctx.telegram.sendMessage({
 			chatId,
 			replyToMessageId: replyToId,

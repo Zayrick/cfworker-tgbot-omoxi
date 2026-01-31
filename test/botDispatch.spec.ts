@@ -164,5 +164,6 @@ describe('Bot message dispatch', () => {
 		expect(firstSend?.params?.text).toContain('所问之事');
 		expect(firstSend?.params?.text).toContain('所得之卦');
 		expect(firstSend?.params?.text).toContain('所占之时');
+		expect(firstSend?.params?.text).toContain('别急，算着呢~');
 	});
 });
