@@ -26,13 +26,23 @@ declare global {
 		env_bot_username?: string;
 
 		/**
-		 * Optional access control filter.
+		 * Optional access control filter (env-based fallback when D1 is unavailable).
 		 *
 		 * - env_filter_mode: off | whitelist | blacklist
 		 * - env_filter_list: comma-separated numeric IDs (can include negative group IDs)
 		 */
 		env_filter_mode?: string;
 		env_filter_list?: string;
+
+		/**
+		 * Admin Telegram user ID. Only this user can execute /admin commands.
+		 */
+		env_admin_id?: string;
+
+		/**
+		 * Cloudflare D1 database binding for persistent configuration.
+		 */
+		DB?: D1Database;
 
 		/**
 		 * /sm (算命) command-specific configuration

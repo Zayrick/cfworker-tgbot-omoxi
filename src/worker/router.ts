@@ -21,7 +21,7 @@ export async function routeRequest(request: Request, env: Env, ctx: ExecutionCon
 		return jsonResponse({
 			ok: true,
 			name: 'tgbot-omoxi',
-			commands: commands.map(c => ({ id: c.id, triggers: c.triggers, description: c.description })),
+			commands: commands.filter(c => c.id !== 'admin').map(c => ({ id: c.id, triggers: c.triggers, description: c.description })),
 			routes: {
 				webhook: '/<safePath>/endpoint',
 				registerWebhook: '/<safePath>/registerWebhook',
@@ -35,11 +35,16 @@ export async function routeRequest(request: Request, env: Env, ctx: ExecutionCon
 	const telegram = createTelegramClient(config.token);
 	const bot = new Bot(commands);
 
+	const db = (env.DB as D1Database | undefined) ?? null;
+
 	if (url.pathname === paths.webhook) {
 		return handleWebhook(request, config.secret, bot, {
 			env,
 			bot: config,
 			telegram,
+			db,
+			adminId: config.adminId,
+			waitUntil: (p) => ctx.waitUntil(p),
 		}, ctx);
 	}
 

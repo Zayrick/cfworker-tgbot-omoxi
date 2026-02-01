@@ -11,6 +11,7 @@ export type BotConfig = {
 	safePath: string;
 	botUsername: string;
 	accessControl: AccessControlConfig;
+	adminId: number | null;
 };
 
 export type BotPaths = {
@@ -54,6 +55,9 @@ export function readBotConfig(env: Env): BotConfig {
 	const secret = env.env_bot_secret?.trim();
 	if (!secret) throw new Error('Missing env_bot_secret');
 
+	const adminRaw = env.env_admin_id?.trim();
+	const adminId = adminRaw ? Number.parseInt(adminRaw, 10) : null;
+
 	return {
 		token,
 		secret,
@@ -63,6 +67,7 @@ export function readBotConfig(env: Env): BotConfig {
 			mode: parseAccessControlMode(env.env_filter_mode),
 			list: parseIdList(env.env_filter_list),
 		},
+		adminId: Number.isFinite(adminId) ? adminId : null,
 	};
 }
 

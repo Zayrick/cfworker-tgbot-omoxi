@@ -31,7 +31,19 @@
 		"env_bot_username": "omoxi_bot",
 		"env_sm_ai_api_endpoint": "https://openrouter.ai/api/v1/chat/completions",
 		"env_sm_ai_model_name": "google/gemini-3-flash-preview"
-	}
+	},
+	/**
+	 * D1 Database Binding
+	 * Create with: npx wrangler d1 create tgbot-omoxi-db
+	 * Then fill in the database_id below.
+	 */
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "tgbot-omoxi-db",
+			"database_id": "84b6a8b9-bfa6-4542-beb9-eff211017f55"
+		}
+	]
 	/**
 	 * Static Assets
 	 * https://developers.cloudflare.com/workers/static-assets/binding/

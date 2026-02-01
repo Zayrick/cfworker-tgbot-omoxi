@@ -4,12 +4,18 @@ export type TelegramApiResponse<T = unknown> = {
 	description?: string;
 };
 
+export type DeleteMessageParams = {
+	chatId: number;
+	messageId: number;
+};
+
 export type TelegramClient = {
 	sendMessage: (params: SendMessageParams) => Promise<TelegramApiResponse<SendMessageResult>>;
 	editMessageText: (params: EditMessageTextParams) => Promise<TelegramApiResponse<SendMessageResult>>;
 	editInlineMessageText: (params: EditInlineMessageTextParams) => Promise<TelegramApiResponse<true>>;
 	answerInlineQuery: (params: AnswerInlineQueryParams) => Promise<TelegramApiResponse<true>>;
 	setWebhook: (params: SetWebhookParams) => Promise<TelegramApiResponse<true>>;
+	deleteMessage: (params: DeleteMessageParams) => Promise<TelegramApiResponse<true>>;
 };
 
 export type SendMessageParams = {
@@ -103,6 +109,12 @@ export function createTelegramClient(token: string): TelegramClient {
 			if (params.secretToken) queryParams.secret_token = params.secretToken;
 			const response = await fetch(apiUrl(token, 'setWebhook', queryParams));
 			return (await response.json()) as TelegramApiResponse<true>;
+		},
+		async deleteMessage(params) {
+			return postJson(token, 'deleteMessage', {
+				chat_id: params.chatId,
+				message_id: params.messageId,
+			});
 		},
 	};
 }

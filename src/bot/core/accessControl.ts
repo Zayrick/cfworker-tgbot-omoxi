@@ -1,5 +1,7 @@
 import type { AccessControlConfig } from '../../config/botConfig';
+import { getFilterMode, isAllowedByDb } from '../../services/db';
 
+/** Env-based fallback (no D1) */
 export function isAllowed(access: AccessControlConfig, userId: number, chatId: number): boolean {
 	if (access.mode === 'off') return true;
 
@@ -13,3 +15,16 @@ export function isAllowed(access: AccessControlConfig, userId: number, chatId: n
 	return list.includes(userId) || list.includes(chatId);
 }
 
+/** D1-backed access check with per-command granularity */
+export async function isAllowedAsync(
+	db: D1Database | null,
+	fallback: AccessControlConfig,
+	userId: number,
+	chatId: number,
+	commandId: string,
+): Promise<boolean> {
+	if (!db) return isAllowed(fallback, userId, chatId);
+
+	const mode = await getFilterMode(db);
+	return isAllowedByDb(db, mode, userId, chatId, commandId);
+}

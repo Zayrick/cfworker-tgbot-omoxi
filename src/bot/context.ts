@@ -5,4 +5,7 @@ export type BotContext = {
 	env: Env;
 	bot: BotConfig;
 	telegram: TelegramClient;
+	db: D1Database | null;
+	adminId: number | null;
+	waitUntil: (promise: Promise<unknown>) => void;
 };
