@@ -40,5 +40,13 @@ declare global {
 		env_sm_ai_api_endpoint?: string;
 		env_sm_ai_api_key?: string;
 		env_sm_ai_model_name?: string;
+
+		/**
+		 * /tarot command-specific configuration
+		 * If omitted, /tarot falls back to env_sm_*.
+		 */
+		env_tarot_ai_api_endpoint?: string;
+		env_tarot_ai_api_key?: string;
+		env_tarot_ai_model_name?: string;
 	}
 }

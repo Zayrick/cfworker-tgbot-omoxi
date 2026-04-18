@@ -27,6 +27,13 @@ describe('tgbot-omoxi worker', () => {
 			        "/sm",
 			      ],
 			    },
+			    {
+			      "description": "三张塔罗牌占卜（/tarot）",
+			      "id": "tarot",
+			      "triggers": [
+			        "/tarot",
+			      ],
+			    },
 			  ],
 			  "name": "tgbot-omoxi",
 			  "ok": true,
@@ -56,6 +63,13 @@ describe('tgbot-omoxi worker', () => {
 			      "id": "sm",
 			      "triggers": [
 			        "/sm",
+			      ],
+			    },
+			    {
+			      "description": "三张塔罗牌占卜（/tarot）",
+			      "id": "tarot",
+			      "triggers": [
+			        "/tarot",
 			      ],
 			    },
 			  ],

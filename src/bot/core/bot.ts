@@ -20,6 +20,7 @@ export class Bot {
 		}
 		lines.push('');
 		lines.push('示例：/sm 今天运势如何？');
+		lines.push('示例：/tarot 这次合作会顺利吗？');
 		return lines.join('\n');
 	}
 

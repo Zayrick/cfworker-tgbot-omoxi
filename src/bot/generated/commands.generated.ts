@@ -3,5 +3,6 @@
 import type { BotCommand } from '../core/command';
 import nbnhhsh from '../../commands/nbnhhsh';
 import sm from '../../commands/sm';
+import tarot from '../../commands/tarot';
 
-export const commands: BotCommand[] = [nbnhhsh, sm];
+export const commands: BotCommand[] = [nbnhhsh, sm, tarot];

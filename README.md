@@ -38,6 +38,18 @@
 - `env_sm_ai_api_key`
 - `env_sm_ai_model_name`
 
+### `/tarot` 专属（可选，但缺失会导致 `/tarot` 回退到 `/sm` 的 AI 配置）
+
+- `env_tarot_ai_api_endpoint`
+- `env_tarot_ai_api_key`
+- `env_tarot_ai_model_name`
+
+如果未设置上述变量，`/tarot` 会依次回退到：
+
+- `env_sm_ai_api_endpoint`
+- `env_sm_ai_api_key`
+- `env_sm_ai_model_name`
+
 ## 添加新命令（像加“控制器”一样）
 
 1. 新建目录：`src/commands/<name>/`
