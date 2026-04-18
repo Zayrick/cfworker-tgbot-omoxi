@@ -236,9 +236,10 @@ describe('Bot message dispatch', () => {
 		expect(events.indexOf('fetch')).toBeLessThan(events.indexOf('editMessageText'));
 
 		const firstSend = spy.calls.find(c => c.method === 'sendMessage') as any;
-		expect(firstSend?.params?.text).toContain('抽牌方式');
-		expect(firstSend?.params?.text).toContain('抽牌时间');
-		expect(firstSend?.params?.text).toContain('抽到数字');
+		expect(firstSend?.params?.text).toContain('塔罗指引：');
+		expect(firstSend?.params?.text).not.toContain('抽牌方式');
+		expect(firstSend?.params?.text).not.toContain('抽牌时间');
+		expect(firstSend?.params?.text).not.toContain('抽到数字');
 		expect(firstSend?.params?.text).toContain('牌已经翻开，正在解读~');
 	});
 

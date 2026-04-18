@@ -9,16 +9,13 @@ const TRIGGERS = ['/tarot'];
 
 function buildTarotHtml(params: { question: string; spread: TarotSpread }): string {
 	const q = escapeHtml(params.question);
-	const timeStr = escapeHtml(params.spread.timeStr);
-	const numbers = escapeHtml(params.spread.drawnNumbers.join('、'));
 	const cards = params.spread.draws
 		.map(
-			(draw, index) =>
-				`${index + 1}. 第${draw.number}号：${escapeHtml(draw.card.name)}（${escapeHtml(getOrientationLabel(draw.card.orientation))}）`,
+			draw => `${escapeHtml(draw.card.name)} · ${escapeHtml(getOrientationLabel(draw.card.orientation))}`,
 		)
 		.join('\n');
 
-	return `<blockquote>所问之事：${q}\n抽牌方式：78张整副洗牌，随机正逆位，3个数字映射\n抽牌时间：${timeStr}\n抽到数字：${numbers}\n对应牌：\n${cards}</blockquote>`;
+	return `<blockquote>所问之事：${q}\n塔罗指引：\n${cards}</blockquote>`;
 }
 
 function buildInlineWaitingHtml(question: string): string {
